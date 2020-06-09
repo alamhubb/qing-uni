@@ -38,10 +38,8 @@
 <script lang="ts">
   import {Vue, Component, Prop, Emit, Model, Watch} from 'vue-property-decorator'
 
-  import {namespace} from "vuex-class"
-  import UniUtils from "qing-uniui/utils/UniUtils"
+  import UniUtils from "qing-uni/utils/UniUtils"
 
-  const appStore = namespace('app')
 
   /*
   显示出来已经选了的城市，给她画上钩
