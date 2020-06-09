@@ -1,7 +1,7 @@
 .q-sidebar-box {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
+  @extend .flex-1;
+  @extend .overflow-hidden;
+  @extend .flex-row;
 }
 
 .q-sidebar-item {

@@ -1,13 +1,14 @@
 <template>
     <view :class="[uuid]" class="q-sidebar-box">
-        <scroll-view class="flex-none" :scroll-top="leftBoxScrollTop" scroll-y :style="{'width':leftBoxWidth+'rpx'}">
+        <scroll-view class="flex-none h100r" :scroll-top="leftBoxScrollTop" scroll-y
+                     :style="{'width':leftBoxWidth+'rpx'}">
             <view v-for="(item,index) in dataList" :class="[uuid]" class="sidebar-left-item" :key="index"
                   @click="leftMenuClick(index)"
             >
                 <slot name="leftRow" v-bind:item="item" v-bind:index="index" v-bind:current="chooseIndex"></slot>
             </view>
         </scroll-view>
-        <scroll-view class="flex-auto overflow-hidden" :scroll-into-view="rightBoxScrollIntoId" scroll-y
+        <scroll-view class="flex-auto h100r" :scroll-into-view="rightBoxScrollIntoId" scroll-y
                      @scroll="rightBoxScroll"
                      :style="rightBoxStyle">
             <view v-for="(item,index) in dataList" :class="[uuid]" class="sidebar-right-item"
@@ -33,7 +34,6 @@
     readonly uuid: string = 'u' + UniUtils.getUUID()
 
     @Prop() readonly dataList: any []
-    @Prop({default: 0}) readonly rightBoxPadding: number
     @Prop({default: 'rgb(250, 250, 250)'}) readonly rightBgColor: string
     @Prop() readonly rightLastItemHeight: string
     @Prop({default: 200}) readonly leftBoxWidth: number
@@ -67,10 +67,7 @@
      * 记录左侧每个索引对应的滚动位置
      */
     rightItemTops: any[] = []
-    /**
-     * 右侧盒子的padding
-     */
-    rightBoxPaddingPx: number = 0
+
 
     mounted() {
       this.initBoxItemTops()
@@ -135,7 +132,6 @@
       const query: SelectorQuery = uni.createSelectorQuery().in(this)
       //存储右侧菜单滚动时的临界点
       const node: NodesRef = query.selectAll('.' + this.uuid + '.sidebar-right-item')
-      this.rightBoxPaddingPx = Math.floor(uni.upx2px(this.rightBoxPadding))
       node.boundingClientRect((res: any) => {
         if (!res.length) {
           UniUtils.delayTime(100).then(() => {
@@ -185,9 +181,8 @@
       }).exec()
     }
 
-
     get rightBoxStyle() {
-      return {'padding': this.rightBoxPadding + 'rpx', 'background-color': this.rightBgColor}
+      return {'background-color': this.rightBgColor}
     }
 
 
@@ -195,8 +190,7 @@
       if (this.rightLastItemHeight) {
         return this.rightLastItemHeight
       } else {
-        //他的高度应该上下padding
-        return this.componentHeight - this.rightBoxPaddingPx * 2 + 'px'
+        return this.componentHeight
       }
     }
   }
