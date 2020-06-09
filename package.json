@@ -20,6 +20,10 @@
     "url": "git+https://github.com/qinkaiyuan/qing-uni.git"
   },
   "version": "0.1.4",
+  "files": [
+    "lib/",
+    "package.json"
+  ],
   "dependencies": {
     "uuid": "^7.0.3"
   },
