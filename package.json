@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/qinkaiyuan/qing-uni.git"
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "files": [
     "lib/",
     "package.json"
