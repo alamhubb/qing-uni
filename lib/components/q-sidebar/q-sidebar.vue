@@ -8,9 +8,8 @@
                 <slot name="leftRow" v-bind:item="item" v-bind:index="index" v-bind:current="chooseIndex"></slot>
             </view>
         </scroll-view>
-        <scroll-view class="flex-auto h100r" :scroll-into-view="rightBoxScrollIntoId" scroll-y
-                     @scroll="rightBoxScroll"
-                     :style="rightBoxStyle">
+        <scroll-view class="flex-auto h100r bg-white" :scroll-into-view="rightBoxScrollIntoId" scroll-y
+                     @scroll="rightBoxScroll">
             <view v-for="(item,index) in dataList" :class="[uuid]" class="sidebar-right-item"
                   :id="'sidebar-right-'+index"
                   :key="index"
@@ -34,8 +33,6 @@
     readonly uuid: string = 'u' + UniUtils.getUUID()
 
     @Prop() readonly dataList: any []
-    @Prop({default: 'rgb(250, 250, 250)'}) readonly rightBgColor: string
-    @Prop() readonly rightLastItemHeight: string
     @Prop({default: 200}) readonly leftBoxWidth: number
     /**
      * 提前量，提前多少显示到下一个
@@ -58,7 +55,7 @@
     /**
      * 获取整个元素高度
      */
-    componentHeight: number = 0
+    componentHeight: number = 200
     /**
      * 记录右侧每个索引对应的滚动位置
      */
@@ -68,13 +65,12 @@
      */
     rightItemTops: any[] = []
 
-
     mounted() {
       this.initBoxItemTops()
     }
 
     //传入左侧选中 样式类
-    async leftMenuClick(index: number) {
+    leftMenuClick(index: number) {
       //如果选中的当前的，则直接返回
       if (index === this.chooseIndex) return
       this.leftScrollToIndex(index)
@@ -93,7 +89,7 @@
       this.initBoxItemTops()
     }
 
-    async rightBoxScroll(e) {
+    rightBoxScroll(e) {
       const scrollTop = e.detail.scrollTop
       const scrollIndex = this.rightItemTops.findIndex((item, index) => {
         const height1 = item
@@ -181,17 +177,8 @@
       }).exec()
     }
 
-    get rightBoxStyle() {
-      return {'background-color': this.rightBgColor}
-    }
-
-
     get rightLastHeightPx() {
-      if (this.rightLastItemHeight) {
-        return this.rightLastItemHeight
-      } else {
-        return this.componentHeight
-      }
+      return this.componentHeight + 'px'
     }
   }
 </script>
