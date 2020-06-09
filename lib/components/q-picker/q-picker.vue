@@ -38,7 +38,7 @@
 <script lang="ts">
   import {Vue, Component, Prop, Emit, Model, Watch} from 'vue-property-decorator'
 
-  import UniUtils from "qing-uni/utils/UniUtils"
+  import UniUtils from "../../utils/UniUtils"
 
 
   /*
