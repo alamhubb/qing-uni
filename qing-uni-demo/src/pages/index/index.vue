@@ -1,9 +1,9 @@
 <template>
     <view>
-        {{showPopup}}
-        <q-popup>
-
+        <q-popup v-model="showPopup" bottom>
         </q-popup>
+
+        <view @click="showPopup=true">显示</view>
     </view>
 </template>
 

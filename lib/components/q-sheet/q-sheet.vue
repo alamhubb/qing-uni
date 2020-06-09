@@ -17,14 +17,11 @@
 </template>
 <script lang="ts">
   import {Vue, Component} from 'vue-property-decorator'
-  import QIcon from "components/q-icon/q-icon.vue"
 
   /*
   显示出来已经选了的城市，给她画上钩
   * */
-  @Component({
-    components: {QIcon}
-  })
+  @Component
   export default class QSheet extends Vue {
 
   }

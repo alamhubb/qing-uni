@@ -1,17 +1,17 @@
 <template>
-    <view class="u-drawer">
-        <q-mask v-if="value" @click="input(false)">
+    <view v-if="value" class="q-popup-box">
+        <q-mask @click="input(false)">
             <!--        ios端不支持prevent需要用stop代替-->
-
         </q-mask>
-        <view class="q-popup" :class="popupClass"
-              @touchmove.stop.prevent
-              @click.stop
-        >
-            <slot></slot>
+        <view class="h100r flex-row">
+            <view class="q-popup" :class="popupClass"
+                  @touchmove.stop.prevent
+                  @click.stop
+            >
+                <slot></slot>
+            </view>
         </view>
     </view>
-
 </template>
 <script lang="ts">
   import {Vue, Component, Prop, Emit, Model} from 'vue-property-decorator'
@@ -32,38 +32,8 @@
       return value
     }
 
-    created() {
-    }
-
     get popupClass() {
       return this.top ? 'top' : this.bottom ? 'bottom' : this.position
     }
   }
 </script>
-<style scoped lang="scss">
-    .u-drawer {
-        /* #ifndef APP-NVUE */
-        display: block;
-        /* #endif */
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-        z-index: 999;
-    }
-
-    .u-drawer-content {
-        /* #ifndef APP-NVUE */
-        display: block;
-        /* #endif */
-        position: absolute;
-        z-index: 1003;
-        transition: all 0.3s linear;
-    }
-
-    .u-animation-zoom {
-        transform: scale(1.15);
-    }
-</style>

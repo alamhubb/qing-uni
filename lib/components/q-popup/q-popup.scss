@@ -1,8 +1,22 @@
+.q-popup-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 999;
+  @extend .h100vh;
+  @extend .w100vw;
+}
+
 //model index 以100开始
 //因为h5端navbar和tabbar为998
 .q-popup {
   width: 340px;
-  @extend .bg-white;
+  position: absolute;
+  z-index: 1003;
+  transition: all 0.3s linear;
 }
 
 .q-popup.bottom {
