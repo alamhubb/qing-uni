@@ -1,5 +1,5 @@
 <template>
-    <view class="q-row-item q-solid-bottom" @click="click">
+    <view class="q-row-item q-solid-bottom bg-active" @click="click">
         <slot></slot>
     </view>
 </template>
