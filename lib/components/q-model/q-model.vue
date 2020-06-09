@@ -1,5 +1,4 @@
 <template>
-<!--    <view class="cu-modal value">-->
     <view class="q-modal"
           @touchmove.stop.prevent
           @click.stop
