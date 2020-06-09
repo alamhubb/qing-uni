@@ -1,0 +1,17 @@
+//model index 以100开始
+//因为h5端navbar和tabbar为998
+.q-popup {
+  width: 340px;
+  @extend .bg-white;
+}
+
+.q-popup.bottom {
+  @extend .w100vw;
+  @extend .self-end;
+  @extend .btr-lg;
+}
+
+.q-popup.top {
+  @extend .w100vw;
+  @extend .self-start;
+}

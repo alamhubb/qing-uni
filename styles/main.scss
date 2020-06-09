@@ -1,0 +1,23 @@
+page {
+  background-color: #f1f1f1;
+  font-size: 28rpx;
+  color: #333333;
+  height: 100%;
+}
+
+//隐藏scroll-view的滚动条
+::-webkit-scrollbar {
+  display: none;
+}
+
+view {
+  line-height: 1.8;
+}
+
+text {
+  line-height: 1.4;
+}
+
+ul {
+  list-style: none;
+}

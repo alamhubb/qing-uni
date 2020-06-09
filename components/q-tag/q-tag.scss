@@ -1,0 +1,16 @@
+.q-tag {
+  font-size: 24upx;
+  vertical-align: middle;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0upx 16upx;
+  height: 48upx;
+  font-family: Helvetica Neue, Helvetica, sans-serif;
+  white-space: nowrap;
+}
+.q-tag+.q-tag {
+  @extend .ml-xs;
+}
