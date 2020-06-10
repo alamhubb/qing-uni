@@ -17,21 +17,20 @@
 
 <script lang="ts">
   import {Vue, Component, Prop} from 'vue-property-decorator'
+  import SystemInfo from "../../utils/SystemInfo"
 
   // 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
   let menuButtonInfo: GetMenuButtonBoundingClientRectRes
   // #ifdef MP
   menuButtonInfo = uni.getMenuButtonBoundingClientRect() || null
   // #endif
-
-  const systemInfo: GetSystemInfoResult = uni.getSystemInfoSync()
   /*
   显示出来已经选了的城市，给她画上钩
   * */
   @Component
   export default class QNavBar extends Vue {
-    statusBarHeight: number = systemInfo.statusBarHeight
-    @Prop({default: 44}) readonly height: number
+    statusBarHeight: number = SystemInfo.statusBarHeight
+    @Prop({default: SystemInfo.navBarHeight}) readonly height: number
 
     get navbarInnerStyle() {
       let style: any = {}

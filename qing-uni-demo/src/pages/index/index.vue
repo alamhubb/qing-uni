@@ -1,5 +1,5 @@
 <template>
-    <view class="h100r">
+    <view class="h100vh">
         <q-navbar>
             <q-tabs :tabs="tabs" v-model="currentIndex" @input="tabsChange">
                 <template #default="{tab}">
@@ -9,45 +9,46 @@
                 </template>
             </q-tabs>
         </q-navbar>
-
         <view
                 :style="{
               'height':'calc(100vh - '+talksListHeightSub+'px)'
             }"
         >
-            <swiper class="flex-none h100r" :current="swiperCurrent"
+            <swiper class="h100r" :current="swiperCurrent"
                     @change="talkSwiperChange">
                 <swiper-item v-for="(item, swiperIndex) in tabs" :key="swiperIndex">
-                    {{item}}
-                    <!--<scroll-view class="h100r" :scroll-y="scrollEnable" @scrolltolower="onreachBottom">
-                        &lt;!&ndash; 下拉刷新组件 &ndash;&gt;
-                        <block v-for="(talk,index) in homeTypeObjs[swiperIndex].talks" :key="talk.id">
-                            <talk-item
-                                    :talk="talk"
-                                    :home-type="homeType"
-                                    @deleteTalk="deleteTalk"
-                            />
-                            &lt;!&ndash;wx平台显示的广告&ndash;&gt;
-                            &lt;!&ndash;  #ifdef MP-WEIXIN &ndash;&gt;
-                            <ad class="bg-white mb-5px" v-if="showAd&&showAdIndexList.includes(index)"
-                                unit-id="adunit-65c8911d279d228f" ad-type="video" ad-theme="white"></ad>
-                            &lt;!&ndash;  #endif &ndash;&gt;
+                    <!--<view v-if="swiperIndex === 0">
 
-                            &lt;!&ndash;qq平台显示的广告&ndash;&gt;
-                            &lt;!&ndash;  #ifdef MP-QQ &ndash;&gt;
-                            <ad class="bg-white mb-5px" v-if="showAd&&showAdIndexList.includes(index)"
-                                unit-id="bcc21923107071ac3f8aa076c7e00229" type="card"></ad>
-                            &lt;!&ndash;  #endif &ndash;&gt;
+                    </view>
+                    <view v-else>-->
+                    <view class="bg-white h100r flex-col">
+                        <q-row-line class="mt-sm">
+                            <view class="text-bold">
+                                当前选择：
+                            </view>
+                            <view v-if="bottomDistrict" class="row-col-center">
+                                <q-icon v-if="bottomDistrict.isPosition" size="30" class="mr-mn" icon="map-fill"/>
+                                <view class="text-bold" v-if="bottomDistrict.provinceName">
+                                    {{bottomDistrict.provinceName}}
+                                </view>
+                                <view class="text-bold" v-else>
+                                    {{bottomDistrict.adName}}
+                                </view>
+                                <view v-if="bottomDistrict.cityName" class="text-bold">
+                                    - {{bottomDistrict.cityName}}
+                                </view>
+                                <view v-if="bottomDistrict.districtName" class="text-bold">
+                                    - {{bottomDistrict.districtName}}
+                                </view>
+                            </view>
+                        </q-row-line>
+                        <view class="mt-sm flex-1 overflow-hidden" v-if="districts && districts.length">
+                            <q-picker ref="citySelect" class="bg-white" v-model="bottomDistrict"
+                                      :dataList="districts"></q-picker>
+                        </view>
+                    </view>
 
-                            &lt;!&ndash;头条平台显示的广告&ndash;&gt;
-                            &lt;!&ndash;  #ifdef MP-TOUTIAO &ndash;&gt;
-                            <ad class="bg-white mb-5px" type="banner video large"
-                                v-if="showAd&&showAdIndexList.includes(index)"
-                                unit-id="3snract0gqnc3fn16d"></ad>
-                            &lt;!&ndash;  #endif &ndash;&gt;
-                        </block>
-                        <uni-load-more :status="homeTypeObjs[swiperIndex].loadMore" @click="queryEnd"></uni-load-more>
-                    </scroll-view>-->
+                    <!--                    </view>-->
                 </swiper-item>
             </swiper>
         </view>
@@ -61,6 +62,8 @@
     Watch
   } from 'vue-property-decorator'
   import SystemInfo from "../../../../lib/utils/SystemInfo"
+  import District from "@/model/District"
+  import DistrictAPI from "@/api/DistrictAPI"
 
   @Component
   export default class IndexVue extends Vue {
@@ -69,21 +72,25 @@
     currentIndex: number = 0
     swiperCurrent: number = 0
     talksListHeightSub: number = SystemInfo.titleHeight
+    districts: District[] = []
+    bottomDistrict: District = null
+
+    onLoad(){
+      //查询所有城市
+      DistrictAPI.queryDistrictsAPI().then((res: any) => {
+        this.districts = res.data
+      })
+    }
 
     //talkSwipe
     talkSwiperChange(e) {
       let current = e.detail.current
       this.swiperCurrent = current
-      this.current = current
-      this.setHomeType()
-      //存入store
-      //切换时截取其他的只保留后20条
-      this.homeTypeObjs.forEach((item, index) => {
-        if (index !== current) {
-          item.talks = item.talks.slice(-20)
-          item.loadMore = LoadMoreType.more
-        }
-      })
+      this.currentIndex = current
+    }
+
+    tabsChange(index: number) {
+      this.swiperCurrent = index
     }
   }
 </script>
