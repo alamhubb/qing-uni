@@ -52,4 +52,175 @@ export default class UniUtils {
       })
     )
   }
+
+  //交互
+  public static toast(title: string) {
+    return new Promise((resolve, reject) => {
+      uni.showToast({
+        icon: 'none',
+        title: title,
+        duration: 600,
+        success() {
+          resolve()
+        },
+        fail() {
+          reject()
+        }
+      })
+    })
+  }
+
+  public static toastMiniLong(title: string) {
+    return new Promise((resolve, reject) => {
+      uni.showToast({
+        icon: 'none',
+        title: title,
+        duration: 1000,
+        success() {
+          resolve()
+        },
+        fail() {
+          reject()
+        }
+      })
+    })
+  }
+
+  public static toastLong(title: string) {
+    return new Promise((resolve, reject) => {
+      uni.showToast({
+        icon: 'none',
+        title: title,
+        duration: 1500,
+        success() {
+          resolve()
+        },
+        fail() {
+          reject()
+        }
+      })
+    })
+  }
+
+  public static toastVeryLong(title: string) {
+    return new Promise((resolve, reject) => {
+      uni.showToast({
+        icon: 'none',
+        title: title,
+        duration: 3000,
+        success() {
+          resolve()
+        },
+        fail() {
+          reject()
+        }
+      })
+    })
+  }
+
+  public static action(msg: string, okLabel?: string) {
+    return new Promise((resolve, reject) => {
+      uni.showModal({
+        content: msg,
+        confirmText: okLabel || '确定',
+        success(res) {
+          if (res.confirm) {
+            resolve()
+          } else if (res.cancel) {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public static info(msg: string, okLabel?: string) {
+    return new Promise((resolve, reject) => {
+      uni.showModal({
+        title: '提示',
+        content: msg,
+        confirmText: okLabel || '确定',
+        success(res) {
+          if (res.confirm) {
+            resolve()
+          } else if (res.cancel) {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public static hint(msg: string, okLabel?: string) {
+    return new Promise((resolve, reject) => {
+      uni.showModal({
+        content: msg,
+        showCancel: false,
+        confirmText: okLabel || '确定',
+        success(res) {
+          if (res.confirm) {
+            resolve()
+          } else if (res.cancel) {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public static warning(msg: string, okLabel?: string) {
+    return new Promise((resolve, reject) => {
+      uni.showModal({
+        title: '警告',
+        content: msg,
+        confirmText: okLabel || '确定',
+        success(res) {
+          if (res.confirm) {
+            resolve()
+          } else if (res.cancel) {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public static error(msg: string, title?: string) {
+    return new Promise((resolve, reject) => {
+      uni.showModal({
+        title: title || '错误',
+        content: msg,
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            resolve()
+          } else if (res.cancel) {
+            reject()
+          }
+        }
+      })
+    })
+  }
+
+  public static showLoading(loadText: string) {
+    uni.showLoading({title: loadText || ''})
+  }
+
+  public static hideLoading() {
+    uni.hideLoading()
+  }
+
+  public static actionSheet(itemList: string[]): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      uni.showActionSheet({
+        itemList: itemList,
+        success(res) {
+          resolve(res.tapIndex)
+        },
+        fail(res) {
+          reject(res.errMsg)
+        }
+      })
+    })
+  }
 }

@@ -16,5 +16,6 @@
 </script>
 
 <style lang="scss">
+    @import "./styles/iconfont/mdi.css";
     @import "./styles/index.scss";
 </style>

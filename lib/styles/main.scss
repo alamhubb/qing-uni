@@ -21,3 +21,15 @@ text {
 ul {
   list-style: none;
 }
+
+view,
+scroll-view,
+swiper,
+button,
+input,
+textarea,
+label,
+navigator,
+image {
+  box-sizing: border-box;
+}

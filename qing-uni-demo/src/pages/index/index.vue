@@ -11,17 +11,52 @@
         </q-navbar>
         <view
                 :style="{
-              'height':'calc(100vh - '+talksListHeightSub+'px)'
+              'height':'calc(100vh - '+pageTitleHeight+'px)'
             }"
         >
             <swiper class="h100r" :current="swiperCurrent"
                     @change="talkSwiperChange">
                 <swiper-item v-for="(item, swiperIndex) in tabs" :key="swiperIndex">
-                    <!--<view v-if="swiperIndex === 0">
-
+                    <view v-if="swiperIndex === 0" class="h100r">
+                        <q-sidebar :dataList="tagTypes" class="h100r flex-row">
+                            <template #leftRow="{item,index,current}">
+                                <view class="q-sidebar-item" :class="{'q-sidebar-item-active':index === current}">
+                                    <view class="row-all-center flex-auto">
+                                        <text class="uni-ellipsis">{{item.name}}</text>
+                                    </view>
+                                </view>
+                            </template>
+                            <template #rightRow="{item}">
+                                <view class="bg-white">
+                                    <view class="q-row">
+                                        <q-icon size="32" icon="mdi-circle-medium" class="text-green margin-right-xs"></q-icon>
+                                        <text class="text-bold">{{item.name}}</text>
+                                    </view>
+                                    <view if="item.childs">
+                                        <q-row-item v-for="tag in item.tags" :key="tag.id" @click="change(tag)">
+                                            <view class="row-col-center">
+                                                <image class="q-avatar radius lg flex-none"
+                                                       :src="tag.avatar"
+                                                />
+                                                <view class="ml-sm overflow-hidden">
+                                                    <view>
+                                                        {{tag.name}}
+                                                    </view>
+                                                    <view class="text-gray text-xs text-ellipsis">
+                                                        帖子：{{tag.talkCount}}
+                                                    </view>
+                                                </view>
+                                            </view>
+                                            <q-icon icon="mdi-chevron-right" size="48" class="text-lg margin-right-sm"
+                                                    @click=""
+                                            ></q-icon>
+                                        </q-row-item>
+                                    </view>
+                                </view>
+                            </template>
+                        </q-sidebar>
                     </view>
-                    <view v-else>-->
-                    <view class="bg-white h100r flex-col">
+                    <view v-else class="bg-white h100r flex-col">
                         <q-row-line class="mt-sm">
                             <view class="text-bold">
                                 当前选择：
@@ -47,8 +82,6 @@
                                       :dataList="districts"></q-picker>
                         </view>
                     </view>
-
-                    <!--                    </view>-->
                 </swiper-item>
             </swiper>
         </view>
@@ -64,21 +97,28 @@
   import SystemInfo from "../../../../lib/utils/SystemInfo"
   import District from "@/model/District"
   import DistrictAPI from "@/api/DistrictAPI"
+  import TagAPI from "@/api/TagAPI"
+  import TagType from "@/model/tag/TagType"
+  import Tag from "@/model/tag/Tag"
+  import UniUtils from "../../../../lib/utils/UniUtils"
 
   @Component
   export default class IndexVue extends Vue {
-    showPopup: boolean = true
     tabs: any [] = ['side', 'pick']
     currentIndex: number = 0
     swiperCurrent: number = 0
-    talksListHeightSub: number = SystemInfo.titleHeight
+    pageTitleHeight: number = SystemInfo.titleHeight
     districts: District[] = []
     bottomDistrict: District = null
+    tagTypes: TagType[] = []
 
-    onLoad(){
+    onLoad() {
       //查询所有城市
       DistrictAPI.queryDistrictsAPI().then((res: any) => {
         this.districts = res.data
+      })
+      TagAPI.queryTagTypesAPI().then((res: any) => {
+        this.tagTypes = res.data
       })
     }
 
@@ -91,6 +131,10 @@
 
     tabsChange(index: number) {
       this.swiperCurrent = index
+    }
+
+    change(tag: Tag) {
+      UniUtils.toast('选择了：' + tag.name)
     }
   }
 </script>
