@@ -22,7 +22,8 @@
   "version": "0.1.9",
   "files": [
     "lib/",
-    "package.json"
+    "package.json",
+    "index.ts"
   ],
   "dependencies": {
     "uuid": "^7.0.3"

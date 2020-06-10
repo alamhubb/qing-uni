@@ -30,15 +30,22 @@
 
   @Component
   export default class AboutLinkage extends Vue {
+    /**
+     * 避免组件重复，设置uuid
+     */
     readonly uuid: string = 'u' + UniUtils.getUUID()
-
+    /**
+     * 展示的数据
+     */
     @Prop() readonly dataList: any []
+    /**
+     * 左侧菜单宽度
+     */
     @Prop({default: 200}) readonly leftBoxWidth: number
     /**
-     * 提前量，提前多少显示到下一个
+     * 提前量，提前多少高度px显示到下一个
      */
     @Prop({default: 100}) readonly preShow: number
-
     /**
      * 控制左侧滚动
      */
@@ -51,22 +58,107 @@
      * 控制右侧滚动
      */
     rightBoxScrollIntoId: string = ''
-
     /**
-     * 获取整个元素高度
+     * 获取整个元素高度，默认200
      */
     componentHeight: number = 200
     /**
-     * 记录右侧每个索引对应的滚动位置
+     * 记录左侧每个索引对应的滚动位置
      */
     leftItemTops: any[] = []
     /**
-     * 记录左侧每个索引对应的滚动位置
+     * 记录右侧每个索引对应的滚动位置，切换下一个菜单
      */
     rightItemTops: any[] = []
 
+    //渲染完毕后计算高度
     mounted() {
       this.initBoxItemTops()
+    }
+
+    //数据变化时重新计算高度
+    @Watch('dataList')
+    dataListWatch(o, n) {
+      this.initBoxItemTops()
+    }
+
+    //计算高度
+    initBoxItemTops() {
+      this.initComponentsHeight()
+      this.initRightBoxItemTops()
+      this.initLeftBoxItemTops()
+    }
+
+    //计算组建高度
+    initComponentsHeight() {
+      //获取整个组件的高度
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      const nodeBox: NodesRef = query.select('.' + this.uuid + '.q-sidebar-box')
+      nodeBox.boundingClientRect((res) => {
+        if (res) {
+          this.componentHeight = res.height
+        } else {
+          UniUtils.delayTime(100).then(() => {
+            this.initComponentsHeight()
+          })
+        }
+      }).exec()
+    }
+
+    //计算左侧菜单元素临界点
+    initLeftBoxItemTops() {
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      //存储左侧菜单需要滚动到的点
+      const nodeLeft: NodesRef = query.selectAll('.' + this.uuid + '.sidebar-left-item')
+      nodeLeft.boundingClientRect((res: any) => {
+        if (!res.length) {
+          UniUtils.delayTime(100).then(() => {
+            this.initLeftBoxItemTops()
+          })
+        } else {
+          this.leftItemTops = []
+          res.forEach(item => {
+            //每次滚动到屏幕组件中间的位置
+            //当前高度 + 自己本身一半的高度 - 屏幕一半的高度 - 首个元素距离屏幕顶部的高度
+            let top = item.top + item.height / 2 - this.componentHeight / 2 - res[0].top
+            this.leftItemTops.push(top)
+          })
+        }
+      }).exec()
+    }
+
+    //计算右侧菜单元素滚动高度
+    initRightBoxItemTops() {
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      //存储右侧菜单滚动时的临界点
+      const node: NodesRef = query.selectAll('.' + this.uuid + '.sidebar-right-item')
+      node.boundingClientRect((res: any) => {
+        if (!res.length) {
+          UniUtils.delayTime(100).then(() => {
+            this.initRightBoxItemTops()
+          })
+        } else {
+          this.rightItemTops = []
+          res.forEach((item, index) => {
+            //需要减去头一个元素到顶部的距离，因为高度是从顶部0算的
+            let top = item.top - res[0].top
+            //如果不是第一个，可以设置提前量
+            //因为需要和滚动条位置对比，所以不能出现负数
+            if (index) {
+              //获取上一个元素高度
+              const lastItemHeight = res[index - 1].height
+              //如果提前量大于上一个高度
+              if (this.preShow > lastItemHeight) {
+                //则提前量为上一个的一半
+                top = top - lastItemHeight / 2
+              } else {
+                top = top - this.preShow
+              }
+            }
+            this.rightItemTops.push(top)
+          })
+        }
+      }).exec()
     }
 
     //传入左侧选中 样式类
@@ -84,11 +176,6 @@
       this.leftBoxScrollTop = this.leftItemTops[index]
     }
 
-    @Watch('dataList')
-    dataListWatch(o, n) {
-      this.initBoxItemTops()
-    }
-
     rightBoxScroll(e) {
       const scrollTop = e.detail.scrollTop
       const scrollIndex = this.rightItemTops.findIndex((item, index) => {
@@ -100,83 +187,8 @@
       this.leftScrollToIndex(scrollIndex)
     }
 
-    initLeftBoxItemTops() {
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      //存储左侧菜单需要滚动到的点
-      const nodeLeft: NodesRef = query.selectAll('.' + this.uuid + '.sidebar-left-item')
-      nodeLeft.boundingClientRect((res: any) => {
-        if (!res.length) {
-          UniUtils.delayTime(100).then(() => {
-            this.initLeftBoxItemTops()
-          })
-          return
-        } else {
-          this.leftItemTops = []
-          res.forEach(item => {
-            //每次滚动到屏幕组件中间的位置
-            //当前高度 + 自己本身一半的高度 - 屏幕一半的高度 - 首个元素距离屏幕顶部的高度
-            let top = item.top + item.height / 2 - this.componentHeight / 2 - res[0].top
-            this.leftItemTops.push(top)
-          })
-          return
-        }
-      }).exec()
-    }
 
-    //初始化左侧菜单元素滚动高度
-    initRightBoxItemTops() {
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      //存储右侧菜单滚动时的临界点
-      const node: NodesRef = query.selectAll('.' + this.uuid + '.sidebar-right-item')
-      node.boundingClientRect((res: any) => {
-        if (!res.length) {
-          UniUtils.delayTime(100).then(() => {
-            this.initRightBoxItemTops()
-          })
-          return
-        } else {
-          this.rightItemTops = []
-          res.forEach((item, index) => {
-            //需要减去头一个元素到顶部的距离，因为高度是从顶部0算的
-            let top = item.top - res[0].top
-            //如果不是第一个，可以设置提前量
-            //因为需要和滚动条位置对比，所以不能出现负数
-            if (index) {
-              const lastItemHeight = res[index - 1].height
-              if (this.preShow > lastItemHeight) {
-                top = top - lastItemHeight / 2
-              } else {
-                top = top - this.preShow
-              }
-            }
-            this.rightItemTops.push(top)
-          })
-          return
-        }
-      }).exec()
-    }
-
-    initBoxItemTops() {
-      this.initComponentsHeight()
-      this.initRightBoxItemTops()
-      this.initLeftBoxItemTops()
-    }
-
-    initComponentsHeight() {
-      //获取整个组件的高度
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      const nodeBox: NodesRef = query.select('.' + this.uuid + '.q-sidebar-box')
-      nodeBox.boundingClientRect((res) => {
-        if (res) {
-          this.componentHeight = res.height
-        } else {
-          UniUtils.delayTime(100).then(() => {
-            this.initComponentsHeight()
-          })
-        }
-      }).exec()
-    }
-
+    //最后一个元素占满屏幕高度，如果不给额外高度，无法滚动到最后一个，因为是靠上边界决定左侧菜单的
     get rightLastHeightPx() {
       return this.componentHeight + 'px'
     }
