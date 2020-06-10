@@ -39,7 +39,7 @@
   import {Vue, Component, Prop, Emit, Model, Watch} from 'vue-property-decorator'
 
   import UniUtils from "../../utils/UniUtils"
-
+  import QRowItem from 'qing-uni/lib/components/q-row-item/q-row-item.vue'
 
   /*
   显示出来已经选了的城市，给她画上钩
@@ -49,7 +49,11 @@
   最后取消选择，还显示当前选择的
 
   * */
-  @Component
+  @Component({
+    components: {
+      QRowItem
+    }
+  })
   export default class QPicker extends Vue {
     readonly uuid: string = 'u' + UniUtils.getUUID()
 

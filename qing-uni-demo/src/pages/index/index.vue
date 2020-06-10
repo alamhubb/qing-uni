@@ -17,7 +17,7 @@
             <swiper class="h100r" :current="swiperCurrent"
                     @change="talkSwiperChange">
                 <swiper-item v-for="(item, swiperIndex) in tabs" :key="swiperIndex" class="col-center">
-                    <view v-if="swiperIndex === 0" class="h100r">
+                    <view v-if="swiperIndex === 0" class="h500px">
                         <q-sidebar :dataList="tagTypes" class="h100r flex-row">
                             <template #leftRow="{item,index,current}">
                                 <view class="q-sidebar-item" :class="{'q-sidebar-item-active':index === current}">
@@ -57,7 +57,7 @@
                             </template>
                         </q-sidebar>
                     </view>
-                    <view v-else class="bg-white h100r flex-col">
+                    <view v-else class="bg-white h500px flex-col">
                         <q-row-line class="mt-sm">
                             <view class="text-bold">
                                 当前选择：
@@ -102,9 +102,14 @@
   import TagType from "@/model/tag/TagType"
   import Tag from "@/model/tag/Tag"
   import UniUtils from "../../../../lib/utils/UniUtils"
-  import JsonUtils from "../../../../lib/utils/JsonUtils"
+  import QRowItem from 'qing-uni/lib/components/q-row-item/q-row-item.vue'
+  import QIcon from 'qing-uni/lib/components/q-icon/q-icon.vue'
 
-  @Component
+  @Component({
+    components: {
+      QRowItem, QIcon
+    }
+  })
   export default class IndexVue extends Vue {
     tabs: any [] = ['导航', '城市']
     currentIndex: number = 0
