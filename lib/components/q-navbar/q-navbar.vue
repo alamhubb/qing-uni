@@ -33,6 +33,7 @@
     @Prop({default: SystemInfo.navBarHeight}) readonly height: number
 
     mounted() {
+      //ios情况下，赋值比获取快，所以需要在mounted里面赋值
       this.statusBarHeight = SystemInfo.statusBarHeight
     }
 
