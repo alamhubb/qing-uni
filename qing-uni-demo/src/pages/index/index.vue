@@ -79,7 +79,7 @@
                             </view>
                         </q-row-line>
                         <view class="mt-sm flex-1 overflow-hidden" v-if="districts && districts.length">
-                            <q-picker ref="citySelect" class="bg-white" v-model="bottomDistrict"
+                            <q-picker class="bg-white" v-model="bottomDistrict"
                                       :dataList="districts"></q-picker>
                         </view>
                     </view>
@@ -95,13 +95,13 @@
     Component,
     Watch
   } from 'vue-property-decorator'
-  import SystemInfo from "../../../../lib/utils/SystemInfo"
+  import SystemInfo from "qing-uni/lib/utils/SystemInfo"
   import District from "@/model/District"
   import DistrictAPI from "@/api/DistrictAPI"
   import TagAPI from "@/api/TagAPI"
   import TagType from "@/model/tag/TagType"
   import Tag from "@/model/tag/Tag"
-  import UniUtils from "../../../../lib/utils/UniUtils"
+  import UniUtils from "qing-uni/lib/utils/UniUtils"
   import QRowItem from 'qing-uni/lib/components/q-row-item/q-row-item.vue'
   import QIcon from 'qing-uni/lib/components/q-icon/q-icon.vue'
 

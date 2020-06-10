@@ -56,26 +56,120 @@
   })
   export default class QPicker extends Vue {
     readonly uuid: string = 'u' + UniUtils.getUUID()
-
     @Model('input') readonly value!: any
     @Prop() readonly dataList: any []
+
+    mounted() {
+      this.pageInit()
+    }
+
+    @Watch('dataList')
+    dataListWatch() {
+      this.pageInit()
+    }
+
+    pageInit() {
+      this.getComponentsHeight()
+      this.getOneNodeTops()
+      this.getTwoNodeTops()
+      this.getThreeNodeTops()
+    }
+
     /**
      * 获取整个元素高度
      */
     scrollBoxHeight: number = 0
 
+    getComponentsHeight() {
+      //获取整个元素的高度
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      const nodeBox: NodesRef = query.select('.' + this.uuid + '.q-picker-box')
+      nodeBox.boundingClientRect((res) => {
+        if (res) {
+          this.scrollBoxHeight = res.height
+        } else {
+          UniUtils.delayTime(100).then(() => {
+            this.getComponentsHeight()
+          })
+        }
+      }).exec()
+    }
+
     /**
      * 记录右侧每个索引对应的滚动位置
      */
     oneTops: any[] = []
+
+    getOneNodeTops() {
+      //获取整个元素的高度
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      //存储左侧菜单需要滚动到的点
+      const nodeOne: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-one-level-item')
+      nodeOne.boundingClientRect((res: any) => {
+        if (res.length) {
+          this.oneTops = []
+          res.forEach((item, index) => {
+            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
+            this.oneTops.push(top)
+          })
+        } else {
+          UniUtils.delayTime(100).then(() => {
+            this.getOneNodeTops()
+          })
+        }
+      }).exec()
+    }
+
     /**
      * 记录左侧每个索引对应的滚动位置
      */
     twoTops: any[] = []
+
+    getTwoNodeTops() {
+      //获取整个元素的高度
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      //存储左侧菜单需要滚动到的点
+      const nodeTwo: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-two-level-item')
+      nodeTwo.boundingClientRect((res: any) => {
+        if (res.length) {
+          this.twoTops = []
+          res.forEach((item, index) => {
+            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
+            this.twoTops.push(top)
+          })
+        } else {
+          UniUtils.delayTime(100).then(() => {
+            this.getTwoNodeTops()
+          })
+        }
+      }).exec()
+    }
+
     /**
      * 记录左侧每个索引对应的滚动位置
      */
     threeTops: any[] = []
+
+    getThreeNodeTops() {
+      //获取整个元素的高度
+      const query: SelectorQuery = uni.createSelectorQuery().in(this)
+      //存储左侧菜单需要滚动到的点
+      const nodeThree: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-three-level-item')
+      nodeThree.boundingClientRect((res: any) => {
+        if (res.length) {
+          this.threeTops = []
+          res.forEach((item, index) => {
+            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
+            this.threeTops.push(top)
+          })
+        } else {
+          UniUtils.delayTime(100).then(() => {
+            this.getThreeNodeTops()
+          })
+        }
+      }).exec()
+    }
+
 
     //选中的一级
     checkedOne: number = 0
@@ -83,11 +177,6 @@
     checkedTwo: number = null
     //选中的二级
     checkedThree: number = null
-    oneScrollTop: number = 0
-    twoScrollTop: number = 0
-    threeScrollTop: number = 0
-
-    //todo 点击子节点时，如果父节点没在屏幕内则滚动到父屏幕，待考虑是否需要加
 
     @Emit()
     input() {
@@ -125,6 +214,8 @@
       this.checkedThree = null
     }
 
+    oneScrollTop: number = 0
+
     oneLevelChange(index) {
       if (this.checkedOne === index) {
         this.checkedOne = 0
@@ -140,6 +231,8 @@
       this.input()
     }
 
+    twoScrollTop: number = 0
+
     twoLevelChange(index) {
       if (this.checkedTwo === index) {
         this.checkedTwo = null
@@ -154,6 +247,8 @@
       this.input()
     }
 
+    threeScrollTop: number = 0
+
     threeLevelChange(index) {
       if (this.checkedThree === index) {
         this.checkedThree = null
@@ -162,97 +257,6 @@
         this.threeScrollTop = this.threeTops[index]
       }
       this.input()
-    }
-
-    mounted() {
-      this.pageInit()
-    }
-
-    pageInit() {
-      this.getComponentsHeight()
-      this.getOneNodeTops()
-      this.getTwoNodeTops()
-      this.getThreeNodeTops()
-    }
-
-    @Watch('dataList')
-    dataListWatch() {
-      this.pageInit()
-    }
-
-    getComponentsHeight() {
-      //获取整个元素的高度
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      const nodeBox: NodesRef = query.select('.' + this.uuid + '.q-picker-box')
-      nodeBox.boundingClientRect((res) => {
-        if (res) {
-          this.scrollBoxHeight = res.height
-        } else {
-          UniUtils.delayTime(100).then(() => {
-            this.getComponentsHeight()
-          })
-        }
-      }).exec()
-    }
-
-    getOneNodeTops() {
-      //获取整个元素的高度
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      //存储左侧菜单需要滚动到的点
-      const nodeOne: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-one-level-item')
-      nodeOne.boundingClientRect((res: any) => {
-        if (res.length) {
-          this.oneTops = []
-          res.forEach((item, index) => {
-            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
-            this.oneTops.push(top)
-          })
-        } else {
-          UniUtils.delayTime(100).then(() => {
-            this.getOneNodeTops()
-          })
-        }
-      }).exec()
-    }
-
-    getTwoNodeTops() {
-      //获取整个元素的高度
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      //存储左侧菜单需要滚动到的点
-      const nodeTwo: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-two-level-item')
-      nodeTwo.boundingClientRect((res: any) => {
-        if (res.length) {
-          this.twoTops = []
-          res.forEach((item, index) => {
-            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
-            this.twoTops.push(top)
-          })
-        } else {
-          UniUtils.delayTime(100).then(() => {
-            this.getTwoNodeTops()
-          })
-        }
-      }).exec()
-    }
-
-    getThreeNodeTops() {
-      //获取整个元素的高度
-      const query: SelectorQuery = uni.createSelectorQuery().in(this)
-      //存储左侧菜单需要滚动到的点
-      const nodeThree: NodesRef = query.selectAll('.' + this.uuid + '.q-picker-three-level-item')
-      nodeThree.boundingClientRect((res: any) => {
-        if (res.length) {
-          this.threeTops = []
-          res.forEach((item, index) => {
-            let top = item.top + item.height / 2 - this.scrollBoxHeight / 2 - res[0].top
-            this.threeTops.push(top)
-          })
-        } else {
-          UniUtils.delayTime(100).then(() => {
-            this.getThreeNodeTops()
-          })
-        }
-      }).exec()
     }
   }
 </script>
