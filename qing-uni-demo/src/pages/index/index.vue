@@ -16,7 +16,7 @@
         >
             <swiper class="h100r" :current="swiperCurrent"
                     @change="talkSwiperChange">
-                <swiper-item v-for="(item, swiperIndex) in tabs" :key="swiperIndex">
+                <swiper-item v-for="(item, swiperIndex) in tabs" :key="swiperIndex" class="col-center">
                     <view v-if="swiperIndex === 0" class="h100r">
                         <q-sidebar :dataList="tagTypes" class="h100r flex-row">
                             <template #leftRow="{item,index,current}">
@@ -29,7 +29,8 @@
                             <template #rightRow="{item}">
                                 <view class="bg-white">
                                     <view class="q-row">
-                                        <q-icon size="32" icon="mdi-circle-medium" class="text-green margin-right-xs"></q-icon>
+                                        <q-icon size="32" icon="mdi-circle-medium"
+                                                class="text-green margin-right-xs"></q-icon>
                                         <text class="text-bold">{{item.name}}</text>
                                     </view>
                                     <view if="item.childs">
@@ -101,10 +102,11 @@
   import TagType from "@/model/tag/TagType"
   import Tag from "@/model/tag/Tag"
   import UniUtils from "../../../../lib/utils/UniUtils"
+  import JsonUtils from "../../../../lib/utils/JsonUtils"
 
   @Component
   export default class IndexVue extends Vue {
-    tabs: any [] = ['side', 'pick']
+    tabs: any [] = ['导航', '城市']
     currentIndex: number = 0
     swiperCurrent: number = 0
     pageTitleHeight: number = SystemInfo.titleHeight
@@ -122,6 +124,10 @@
       })
     }
 
+    tabsChange(index: number) {
+      this.swiperCurrent = index
+    }
+
     //talkSwipe
     talkSwiperChange(e) {
       let current = e.detail.current
@@ -129,12 +135,13 @@
       this.currentIndex = current
     }
 
-    tabsChange(index: number) {
-      this.swiperCurrent = index
-    }
-
     change(tag: Tag) {
       UniUtils.toast('选择了：' + tag.name)
     }
   }
 </script>
+<style lang="scss">
+    .h500px {
+        height: 500px;
+    }
+</style>
