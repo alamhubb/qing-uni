@@ -32,6 +32,10 @@
     statusBarHeight: number = SystemInfo.statusBarHeight
     @Prop({default: SystemInfo.navBarHeight}) readonly height: number
 
+    mounted() {
+      this.statusBarHeight = SystemInfo.statusBarHeight
+    }
+
     get navbarInnerStyle() {
       let style: any = {}
       // 导航栏宽度，如果在小程序下，导航栏宽度为胶囊的左边到屏幕左边的距离
