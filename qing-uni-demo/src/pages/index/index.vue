@@ -95,15 +95,15 @@
     Component,
     Watch
   } from 'vue-property-decorator'
-  import SystemInfo from "qing-uni/lib/utils/SystemInfo"
+  import SystemInfo from "qing-uni/src/utils/SystemInfo"
   import District from "@/model/District"
   import DistrictAPI from "@/api/DistrictAPI"
   import TagAPI from "@/api/TagAPI"
   import TagType from "@/model/tag/TagType"
   import Tag from "@/model/tag/Tag"
-  import UniUtils from "qing-uni/lib/utils/UniUtils"
-  import QRowItem from 'qing-uni/lib/components/q-row-item/q-row-item.vue'
-  import QIcon from 'qing-uni/lib/components/q-icon/q-icon.vue'
+  import UniUtils from "qing-uni/src/utils/UniUtils"
+  import QRowItem from 'qing-uni/src/components/q-row-item/q-row-item.vue'
+  import QIcon from 'qing-uni/src/components/q-icon/q-icon.vue'
 
   @Component({
     components: {

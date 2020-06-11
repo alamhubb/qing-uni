@@ -2,7 +2,7 @@
   "easycom": {
     "autoscan": true,
     "custom": {
-      "^q-(.*)": "qing-uni/lib/components/q-$1/q-$1.vue"
+      "^q-(.*)": "qing-uni/src/components/q-$1/q-$1.vue"
     }
   },
   "pages": [
