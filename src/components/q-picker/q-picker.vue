@@ -207,7 +207,7 @@
       }
     }
 
-    //供外层使用
+    //供外父组件使用，清空内部值
     initSelectData() {
       this.checkedOne = 0
       this.checkedTwo = null
@@ -216,6 +216,7 @@
 
     oneScrollTop: number = 0
 
+    //点击菜单，如果重复点击则为取消选中
     oneLevelChange(index) {
       if (this.checkedOne === index) {
         this.checkedOne = 0

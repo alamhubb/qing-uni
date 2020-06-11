@@ -13,7 +13,7 @@
             </view>
         </view>
         <view>
-            <view class="active-line" :style="[tabBarStyle]"></view>
+            <view class="active-line" :style="[tabSlideStyle]"></view>
         </view>
     </view>
 </template>
@@ -40,9 +40,11 @@
     //判断是否已加载过
     firstLoadAfter: boolean = false
 
-    get tabBarStyle() {
+    //滑块样式
+    get tabSlideStyle() {
       return {
         'transform': 'translate(' + this.tabItemLefts[this.value] + 'px, -80%)',
+        //首次不开启动画
         'transition-duration': this.firstLoadAfter ? '0.5s' : '0',
         'width': this.barWidth + 'rpx',
       }
@@ -74,6 +76,7 @@
         //如果元素还没加载出来，延迟0.1秒继续加载
         if (res && res.length) {
           res.forEach(item => {
+            //设置每个tab滑块对应的位置
             this.tabItemLefts.push(item.left + item.width / 2 - UniUtils.upxToPx(Number(this.barWidth) / 2) - res[0].left)
           })
           //首次完成2秒后切换首次加载状态，因为首次加载不需要动画，首次加载后开启动画
