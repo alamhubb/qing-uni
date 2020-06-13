@@ -4,11 +4,11 @@
 
 ## 参考借鉴的相关项目
 
-* > Vuetify
-* > Muse-UI
-* > uni-ui
-* > uview-ui
-* > vant
+*  Vuetify
+*  Muse-UI
+*  uni-ui
+*  uview-ui
+*  vant
 
 ## 其他项目copy过来的代码
 
