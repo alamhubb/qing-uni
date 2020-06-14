@@ -56,28 +56,12 @@ export default class UniUtils {
   }
 
   //交互
-  public static toast(title: string) {
+  public static toast(title: string, time?: number) {
     return new Promise((resolve, reject) => {
       uni.showToast({
         icon: 'none',
         title: title,
-        duration: 600,
-        success() {
-          resolve()
-        },
-        fail() {
-          reject()
-        }
-      })
-    })
-  }
-
-  public static toastMiniLong(title: string) {
-    return new Promise((resolve, reject) => {
-      uni.showToast({
-        icon: 'none',
-        title: title,
-        duration: 1000,
+        duration: time || 600,
         success() {
           resolve()
         },
@@ -94,22 +78,6 @@ export default class UniUtils {
         icon: 'none',
         title: title,
         duration: 1500,
-        success() {
-          resolve()
-        },
-        fail() {
-          reject()
-        }
-      })
-    })
-  }
-
-  public static toastVeryLong(title: string) {
-    return new Promise((resolve, reject) => {
-      uni.showToast({
-        icon: 'none',
-        title: title,
-        duration: 3000,
         success() {
           resolve()
         },

@@ -47,7 +47,7 @@
       let rightButtonWidth = menuButtonInfo.width + 15
       // #ifdef MP-QQ
       //qq时额外15，因为qq开发者工具调试时数值有问题
-      rightButtonWidth = rightButtonWidth + 15
+      rightButtonWidth = 100
       // #endif
       style.marginRight = rightButtonWidth + 'px'
       // #endif
