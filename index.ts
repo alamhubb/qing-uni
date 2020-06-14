@@ -1,5 +1,6 @@
 import UniUtils from "./src/utils/UniUtils"
 import SystemInfo from "./src/utils/SystemInfo"
+import GetSystemInfoResult = UniApp.GetSystemInfoResult;
 
 const install = Vue => {
   UniUtils.getSystemInfoSync().then((res) => {

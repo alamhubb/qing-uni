@@ -1,3 +1,5 @@
+import GetSystemInfoResult = UniApp.GetSystemInfoResult;
+
 export default class SystemInfo{
   public static systemInfo: GetSystemInfoResult = null
   public static platform: string = ''
