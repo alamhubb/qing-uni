@@ -1,44 +1,41 @@
 {
+  "name": "qing-uni",
+  "version": "1.0.1",
   "author": {
     "name": "qinkaiyuan"
   },
-  "bugs": {
-    "url": "https://github.com/qinkaiyuan/qing-uni/issues"
-  },
   "description": "qing-uni",
+  "main": "index.js",
+  "files": [
+    "src/",
+    "package.json",
+    "index.ts"
+  ],
+  "license": "MIT",
   "homepage": "https://github.com/qinkaiyuan/qing-uni#readme",
   "keywords": [
     "qing-uni",
     "qingui",
     "uni ui"
   ],
-  "license": "MIT",
-  "main": "index.js",
-  "name": "qing-uni",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qinkaiyuan/qing-uni.git"
   },
-  "version": "0.2.7",
-  "files": [
-    "src/",
-    "package.json",
-    "index.ts"
-  ],
+  "bugs": {
+    "url": "https://github.com/qinkaiyuan/qing-uni/issues"
+  },
   "dependencies": {
+    "vue": "^2.6.11",
     "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@dcloudio/types": "^1.0.2",
-    "vue": "^2.6.11",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^8.4.2"
   },
   "browserslist": [
     "Android >= 4",
     "ios >= 8"
-  ],
-  "uni-app": {
-    "scripts": {}
-  }
+  ]
 }
