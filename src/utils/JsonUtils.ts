@@ -1,9 +1,10 @@
 export default class JsonUtil {
-  public static deepClone(object: object): any {
+  // 改成any类型
+  public static deepClone(object: any): any {
     return JSON.parse(JSON.stringify(object))
   }
 
-  public static toJson(object: object): string {
+  public static toJson(object: any): string {
     return JSON.stringify(object)
   }
 
@@ -11,7 +12,7 @@ export default class JsonUtil {
     return JSON.parse(objJson)
   }
 
-  public static consoleJson(object: object) {
+  public static consoleJson(object: any) {
     console.log(JSON.stringify(object))
   }
 }
